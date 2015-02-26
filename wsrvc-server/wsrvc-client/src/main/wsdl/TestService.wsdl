@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="TestServiceService" targetNamespace="http://services.wsrvc.capgemini.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://services.wsrvc.capgemini.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://services.wsrvc.capgemini.com/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://services.wsrvc.capgemini.com/">
+  <xs:element name="testInput" type="tns:testInput"/>
+  <xs:element name="testOutput" type="tns:testOutput"/>
+  <xs:complexType name="testInput">
+    <xs:complexContent>
+      <xs:extension base="tns:abstractServiceInput">
+        <xs:sequence>
+          <xs:element name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType abstract="true" name="abstractServiceInput">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:complexType name="testOutput">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ErreurTechnique" type="tns:ErreurTechnique"/>
+  <xs:complexType name="ErreurTechnique">
+    <xs:sequence>
+      <xs:element name="code" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ErreurFonctionnelle" type="tns:ErreurFonctionnelle"/>
+  <xs:complexType name="ErreurFonctionnelle">
+    <xs:sequence>
+      <xs:element name="code" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="pingResponse" nillable="true" type="xs:string"/>
+  <xs:element name="test" nillable="true" type="tns:testInput"/>
+  <xs:element name="testResponse" nillable="true" type="tns:testOutput"/>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="test">
+    <wsdl:part name="test" element="tns:test">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ErreurFonctionnelleException">
+    <wsdl:part name="ErreurFonctionnelleException" element="tns:ErreurFonctionnelle">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ping">
+  </wsdl:message>
+  <wsdl:message name="pingResponse">
+    <wsdl:part name="pingResponse" element="tns:pingResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="ErreurTechniqueException">
+    <wsdl:part name="ErreurTechniqueException" element="tns:ErreurTechnique">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="testResponse">
+    <wsdl:part name="testResponse" element="tns:testResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="TestService">
+    <wsdl:operation name="ping">
+      <wsdl:input name="ping" message="tns:ping">
+    </wsdl:input>
+      <wsdl:output name="pingResponse" message="tns:pingResponse">
+    </wsdl:output>
+      <wsdl:fault name="ErreurTechniqueException" message="tns:ErreurTechniqueException">
+    </wsdl:fault>
+      <wsdl:fault name="ErreurFonctionnelleException" message="tns:ErreurFonctionnelleException">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="test">
+      <wsdl:input name="test" message="tns:test">
+    </wsdl:input>
+      <wsdl:output name="testResponse" message="tns:testResponse">
+    </wsdl:output>
+      <wsdl:fault name="ErreurTechniqueException" message="tns:ErreurTechniqueException">
+    </wsdl:fault>
+      <wsdl:fault name="ErreurFonctionnelleException" message="tns:ErreurFonctionnelleException">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TestServiceServiceSoapBinding" type="tns:TestService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ping">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="ping">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="pingResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErreurTechniqueException">
+        <soap:fault name="ErreurTechniqueException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ErreurFonctionnelleException">
+        <soap:fault name="ErreurFonctionnelleException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="test">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="test">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="testResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ErreurTechniqueException">
+        <soap:fault name="ErreurTechniqueException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="ErreurFonctionnelleException">
+        <soap:fault name="ErreurFonctionnelleException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="TestServiceService">
+    <wsdl:port name="TestServicePort" binding="tns:TestServiceServiceSoapBinding">
+      <soap:address location="http://localhost:9090/TestServicePort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

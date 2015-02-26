@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <!-- Appenders -->
+    <appender name="WSRVC-SERVICES" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="D:/log/wsrvc-services.log" />
+        <param name="MaxFileSize" value="5MB" />
+        <param name="MaxBackupIndex" value="5" />
+		<param name="append" value="true" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %X{request_correlation_id} [%t] (%c) - %m%n" />
+        </layout>
+    </appender>
+
+    <!-- Loggers -->
+    <logger name="com.capgemini.wsrvc.services" additivity="false">
+        <level value="DEBUG" />
+        <appender-ref ref="WSRVC-SERVICES" />
+    </logger>
+
+    <!-- Racine -->
+    <root>
+        <level value="DEBUG" />
+        <appender-ref ref="WSRVC-SERVICES" />
+    </root>
+</log4j:configuration>

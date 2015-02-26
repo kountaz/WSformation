@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jaxws="http://cxf.apache.org/jaxws" xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.1.xsd
+            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+            http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+            http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	<!-- Enable auto-wiring -->
+	<context:annotation-config />
+
+	<bean id="jacksonMapper"
+		class="com.capgemini.wsrvc.services.object.mapper.JacksonObjectMapper" />
+	<bean id="logInTime"
+		class="com.capgemini.wsrvc.services.interceptors.LogInTimeInterceptor">
+	</bean>
+	<bean id="logOutTime"
+		class="com.capgemini.wsrvc.services.interceptors.LogOutTimeInterceptor" />
+
+	<jaxws:endpoint id="testwebservice" implementor="#testImpl"
+		address="/Test/soap/${wsrvc-services.api.version}">
+		<jaxws:inInterceptors>
+			<ref bean="logInTime" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+			<ref bean="logOutTime" />
+		</jaxws:outInterceptors>
+	</jaxws:endpoint>
+
+	<jaxrs:server id="enrolementrestservice"
+		address="/Test/rest/${wsrvc-services.api.version}">
+		<jaxrs:serviceBeans>
+			<ref bean="testImpl" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider">
+				<property name="mapper" ref="jacksonMapper" />
+			</bean>
+			<bean id="erreurFonctionnelle"
+				class="com.capgemini.wsrvc.services.exceptions.mapper.ErreurFonctionnelleMapper" />
+			<bean id="erreurTechnique" class="com.capgemini.wsrvc.services.exceptions.mapper.ErreurTechniqueMapper" />
+			<bean id="exceptionResponseBuilder"
+				class="com.capgemini.wsrvc.services.exceptions.mapper.ExceptionResponseBuilder" />
+		</jaxrs:providers>
+		<jaxrs:inInterceptors>
+			<ref bean="logInTime" />
+		</jaxrs:inInterceptors>
+		<jaxrs:outInterceptors>
+			<ref bean="logOutTime" />
+		</jaxrs:outInterceptors>
+	</jaxrs:server>
+
+	<bean id="testImpl" class="com.capgemini.wsrvc.services.impl.TestServiceImpl">
+		<property name="handler" ref="testHandler" />
+	</bean>
+
+	<bean id="testHandler"
+		class="com.capgemini.wsrvc.services.handler.impl.TestHandlerImpl" />
+
+	<jaxrs:server id="produits"
+		address="/Produits">
+		<jaxrs:serviceBeans>
+			<ref bean="produitservice" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider">
+				<property name="mapper" ref="jacksonMapper" />
+			</bean>
+			<bean id="erreurFonctionnelle"
+				class="com.capgemini.wsrvc.services.exceptions.mapper.ErreurFonctionnelleMapper" />
+			<bean id="erreurTechnique" class="com.capgemini.wsrvc.services.exceptions.mapper.ErreurTechniqueMapper" />
+			<bean id="exceptionResponseBuilder"
+				class="com.capgemini.wsrvc.services.exceptions.mapper.ExceptionResponseBuilder" />
+		</jaxrs:providers>
+	</jaxrs:server>
+	
+	<bean id="produitservice" class="com.capgemini.wsrvc.services.impl.ProduitServiceImpl">
+		<property name="handler" ref="produitHandler" />
+	</bean>
+	
+	<bean id="produitHandler" class="com.capgemini.wsrvc.services.handler.impl.ProduitHandlerImpl">
+		<property name="cache" ref="cacheService" />
+	</bean>
+	
+	<bean id="cacheService" class="com.capgemini.wsrvc.services.impl.CacheServiceImpl">
+		<constructor-arg index="0" type="int" value="${sizecache}" />
+	</bean>
+	
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configurations" />
+		<property name="location"
+			value="classpath:${conf.prefix}-wsrvc-services-externe.properties" />
+	</bean>
+
+	<bean id="configurationFactory" class="org.apache.commons.configuration.ConfigurationFactory">
+		<property name="configurationURL" value="classpath:property-files.xml" />
+	</bean>
+	<bean id="configuration" class="org.apache.commons.configuration.Configuration"
+		factory-bean="configurationFactory" factory-method="getConfiguration" />
+	<bean id="configurations"
+		class="org.springmodules.commons.configuration.CommonsConfigurationFactoryBean">
+		<property name="configurations">
+			<list>
+				<ref bean="configuration" />
+			</list>
+		</property>
+	</bean>
+
+</beans>
