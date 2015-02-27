@@ -1,5 +1,7 @@
 package com.capgemini.wsrvc.services;
 
+import java.util.Collection;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
@@ -12,7 +14,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-
 import com.capgemini.wsrvc.services.bean.Produit;
 import com.capgemini.wsrvc.services.exceptions.ErreurFonctionnelleException;
 import com.capgemini.wsrvc.services.exceptions.ErreurTechniqueException;
@@ -43,5 +44,14 @@ public interface ProduitService {
 	@Path("/{id}")
 	public void delete(@PathParam("id") final int id) throws ErreurFonctionnelleException, ErreurTechniqueException;
 	
+	@WebMethod
+	@GET
+	@Path("/")
+	public Collection<Produit> getAll() throws ErreurFonctionnelleException, ErreurTechniqueException;
+	
+//	@WebMethod
+//	@GET
+//	@Path("/{id}")
+//	public Map<Integer,Produit> search(final int id , ) throws ErreurFonctionnelleException, ErreurTechniqueException;
 	
 }

@@ -1,5 +1,7 @@
 package com.capgemini.wsrvc.services.impl;
 
+import java.util.Collection;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -19,6 +21,9 @@ public class ProduitServiceImpl implements ProduitService {
             .getLogger(ProduitServiceImpl.class);
 	
 	private ProduitHandler handler;
+	
+	
+
 	@Override
 	@WebMethod
 	public Produit get(int id, Boolean option)
@@ -56,7 +61,29 @@ public class ProduitServiceImpl implements ProduitService {
 		handler.delete(id);
 	}
 	
+	@Override
+	public Collection<Produit> getAll() throws ErreurFonctionnelleException,
+			ErreurTechniqueException {
+		// TODO Auto-generated method stub
+		LOG.debug("Execution du service GET ALL produits");
+		return handler.getAll();
+	}
+	
+//	@Override
+//	public Map<Integer,Produit> search() throws ErreurFonctionnelleException,
+//			ErreurTechniqueException {
+//		// TODO Auto-generated method stub
+//		LOG.debug("Execution du service SEARCH produits");
+//		return handler.getAll();
+//	}
+	
+	
 	public void setHandler(ProduitHandler phandler)	{
 		this.handler = phandler;
 	}
+
+	public ProduitHandler getHandler() {
+		return handler;
+	}
+	
 }

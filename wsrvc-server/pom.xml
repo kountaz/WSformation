@@ -43,7 +43,7 @@
 			: plus lisible et gestion automatique par Maven -->
 		<spring.version>3.2.3.RELEASE</spring.version>
 		<unitils.version>3.3</unitils.version>
-		<cxf.version>2.7.5</cxf.version>
+		<cxf.version>2.7.15</cxf.version>
 		<cxf.codegen.plugin.version>2.7.5</cxf.codegen.plugin.version>
 		<spring-modules-jakarta-commons.version>0.8</spring-modules-jakarta-commons.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

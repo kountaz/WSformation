@@ -1,6 +1,8 @@
 package com.capgemini.wsrvc.services.impl;
 
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -14,6 +16,7 @@ import com.capgemini.wsrvc.services.exceptions.ErreurTechniqueException;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 
+
 @Service
 @Scope("singleton")
 public class CacheServiceImpl implements CacheService	{
@@ -23,6 +26,10 @@ public class CacheServiceImpl implements CacheService	{
 	
 	private Cache<Integer, Produit> cache;
 	
+	public Cache<Integer, Produit> getCache() {
+		return cache;
+	}
+
 	public CacheServiceImpl(int size)	{
 		
 		LOG.debug("Constructeur size cache : "+size);
@@ -68,6 +75,18 @@ public class CacheServiceImpl implements CacheService	{
 			ErreurTechniqueException {
 		// TODO Auto-generated method stub
 		cache.invalidate(id);
+	}
+
+	@Override
+	public Collection<Produit> getAllProduit() {
+		// TODO Auto-generated method stub
+		
+		Collection<Produit> list = cache.asMap().values();
+		return list;
+	}
+	
+	public void setCache(Cache<Integer, Produit> cache) {
+		this.cache = cache;
 	}
 
 }

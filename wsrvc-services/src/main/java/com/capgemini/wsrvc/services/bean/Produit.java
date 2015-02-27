@@ -12,7 +12,6 @@ import com.capgemini.wsrvc.services.enums.CodeProduit;
 
 @XmlRootElement(name = "produit")
 @XmlType(propOrder={"id", "description", "code","list"})
-
 public class Produit {
 
 	@XmlAttribute(name="id")
@@ -51,5 +50,17 @@ public class Produit {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String toString()	{
+		
+		String str = "Produit : "+id+" || description : "+description+" || code produit : "+this.code;
+
+		for(String st:list)	{
+			
+			str = str+"|| "+st;
+		}
+            
+		return str;
 	}
 }

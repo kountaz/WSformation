@@ -1,5 +1,7 @@
 package com.capgemini.wsrvc.services.handler.impl;
 
+import java.util.Collection;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ import com.capgemini.wsrvc.services.handler.ProduitHandler;
 
 @Service
 public class ProduitHandlerImpl implements ProduitHandler {
+
 
 	private CacheService cache;
 	
@@ -49,7 +52,25 @@ public class ProduitHandlerImpl implements ProduitHandler {
 		cache.deleteProduit(id);
 	}
 
+	@Override
+	public Collection<Produit> getAll() throws ErreurFonctionnelleException,
+			ErreurTechniqueException {
+		// TODO Auto-generated method stub
+		LOG.debug("WebMethod GET ALL ");
+		LOG.debug("Liste des produits stockés dans le cache");
+		Collection<Produit> list = cache.getAllProduit();
+		if (LOG.isDebugEnabled()) {
+			for (Produit p : list) {
+				LOG.debug(p.toString());
+			}
+		}
+		return list;
+	}
+	
 	public void setCache(final CacheService pcache)	{
 		this.cache = pcache;
+	}
+	public CacheService getCache() {
+		return cache;
 	}
 }

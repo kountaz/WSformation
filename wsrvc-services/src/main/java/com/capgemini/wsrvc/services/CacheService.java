@@ -1,5 +1,7 @@
 package com.capgemini.wsrvc.services;
 
+import java.util.Collection;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +20,7 @@ public interface CacheService {
 	public Produit putProduit(final int id , final Produit produit) throws ErreurFonctionnelleException, ErreurTechniqueException;
 	
 	public void deleteProduit(final int id) throws ErreurFonctionnelleException, ErreurTechniqueException;
+	
+	public Collection<Produit> getAllProduit();
 	
 }

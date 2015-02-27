@@ -74,6 +74,16 @@
 			<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJaxbJsonProvider">
 				<property name="mapper" ref="jacksonMapper" />
 			</bean>
+			<bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
+				<property name="collectionWrapperMap">
+					<map>
+						<entry>
+							<key><value>com.capgemini.wsrvc.services.bean.Produit</value></key>
+							<value>produits</value>
+						</entry>
+					</map>
+				</property>
+			</bean>
 			<bean id="erreurFonctionnelle"
 				class="com.capgemini.wsrvc.services.exceptions.mapper.ErreurFonctionnelleMapper" />
 			<bean id="erreurTechnique" class="com.capgemini.wsrvc.services.exceptions.mapper.ErreurTechniqueMapper" />
@@ -96,23 +106,23 @@
 	
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="properties" ref="configurations" />
+<!-- 		<property name="properties" ref="configurations" /> -->
 		<property name="location"
 			value="classpath:${conf.prefix}-wsrvc-services-externe.properties" />
 	</bean>
 
-	<bean id="configurationFactory" class="org.apache.commons.configuration.ConfigurationFactory">
-		<property name="configurationURL" value="classpath:property-files.xml" />
-	</bean>
-	<bean id="configuration" class="org.apache.commons.configuration.Configuration"
-		factory-bean="configurationFactory" factory-method="getConfiguration" />
-	<bean id="configurations"
-		class="org.springmodules.commons.configuration.CommonsConfigurationFactoryBean">
-		<property name="configurations">
-			<list>
-				<ref bean="configuration" />
-			</list>
-		</property>
-	</bean>
+<!-- 	<bean id="configurationFactory" class="org.apache.commons.configuration.ConfigurationFactory"> -->
+<!-- 		<property name="configurationURL" value="classpath:property-files.xml" /> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="configuration" class="org.apache.commons.configuration.Configuration" -->
+<!-- 		factory-bean="configurationFactory" factory-method="getConfiguration" /> -->
+<!-- 	<bean id="configurations" -->
+<!-- 		class="org.springmodules.commons.configuration.CommonsConfigurationFactoryBean"> -->
+<!-- 		<property name="configurations"> -->
+<!-- 			<list> -->
+<!-- 				<ref bean="configuration" /> -->
+<!-- 			</list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 
 </beans>
